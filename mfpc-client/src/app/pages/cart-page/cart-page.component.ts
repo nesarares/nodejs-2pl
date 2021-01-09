@@ -9,6 +9,7 @@ import { debounceTime } from 'rxjs/operators';
 import { OrderService } from 'src/app/services/order.service';
 import { ThrowStmt } from '@angular/compiler';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @UntilDestroy()
 @Component({
@@ -36,6 +37,7 @@ export class CartPageComponent implements OnInit {
     private productService: ProductService,
     private cartService: CartService,
     private orderService: OrderService,
+    public authService: AuthService,
     private router: Router
   ) {}
 

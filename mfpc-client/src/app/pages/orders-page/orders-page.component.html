@@ -1,6 +1,8 @@
 <section class="page-wrap">
 	<app-error [error]="error"></app-error>
 
+	<h1>Orders</h1>
+
 	<section class="orders" *ngIf="orders">
 		<mat-card class="order" *ngFor="let order of orders; index as i">
 			<p class="date">{{ order.created | date:'medium' }}</p>

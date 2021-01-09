@@ -30,7 +30,7 @@
 		</section>
 		<hr>
 
-		<div class="actions">
+		<div class="actions" *ngIf="authService.isLoggedIn; else needsLogin">
 			<div class="discount">
 				<mat-form-field appearance="outline">
 					<mat-label>Discount code</mat-label>
@@ -42,5 +42,9 @@
 			<button class="order-button" mat-raised-button color="primary" (click)="placeOrder()"
 				[buttonSpinner]="isLoadingOrder">Place order</button>
 		</div>
+	</ng-template>
+
+	<ng-template #needsLogin>
+		<div class="alert">You must be <a routerLink="/login" [queryParams]="{ returnUrl: '/cart' }">logged in</a> in order to place an order</div>
 	</ng-template>
 </section>

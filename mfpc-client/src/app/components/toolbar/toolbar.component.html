@@ -7,6 +7,8 @@
 
 	<button mat-button routerLink="/">Products</button>
 	<button mat-button routerLink="/orders">Orders</button>
+	<button mat-button routerLink="/login" *ngIf="!user">Login</button>
+	<button mat-button routerLink="/account" *ngIf="user">Account</button>
 	
 	<button mat-icon-button class="cart-button" routerLink="/cart">
 		<mat-icon [matBadge]="cartAmount" [matBadgeHidden]="cartAmount <= 0" matBadgeColor="accent">shopping_cart</mat-icon>

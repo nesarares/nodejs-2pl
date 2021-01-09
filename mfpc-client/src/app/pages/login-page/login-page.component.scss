@@ -1,0 +1,12 @@
+mat-card {
+	width: 500px;
+	max-width: 95%;
+	margin: 0 auto;
+	padding: 2rem;
+
+	form {
+		display: grid;
+		grid-template-columns: auto;
+		gap: 1rem;
+	}
+}

@@ -22,6 +22,8 @@ import { FormsModule } from '@angular/forms';
 import { ErrorComponent } from './components/error/error.component';
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { ButtonSpinnerDirective } from './components/button-spinner.directive';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { AccountPageComponent } from './pages/account-page/account-page.component';
 
 registerLocaleData(localeRo);
 
@@ -47,6 +49,8 @@ const materialModules = [
     ErrorComponent,
     OrdersPageComponent,
     ButtonSpinnerDirective,
+    LoginPageComponent,
+    AccountPageComponent,
   ],
   imports: [
     BrowserModule,
