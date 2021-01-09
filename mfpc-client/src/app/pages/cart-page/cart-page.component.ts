@@ -26,6 +26,7 @@ export class CartPageComponent implements OnInit {
   checkCodeSubject = new Subject();
   isCodeValid = false;
   codeChecked = false;
+  discount: number;
 
   isLoading = false;
   isLoadingOrder = false;
@@ -52,6 +53,10 @@ export class CartPageComponent implements OnInit {
     this.checkCodeSubject.pipe(debounceTime(400)).subscribe(() => {
       this.checkDiscountCode();
     })
+  }
+
+  get discountPrice() {
+    return this.discountCode && this.codeChecked && this.isCodeValid ? (this.subtotal * this.discount / 100) : 0;
   }
 
   async loadProducts() {
@@ -89,7 +94,11 @@ export class CartPageComponent implements OnInit {
     try {
       this.error = null;
       this.codeChecked = false;
-      this.isCodeValid = await this.orderService.checkDiscountCode(this.discountCode);
+      const response = await this.orderService.checkDiscountCode(this.discountCode);
+      this.isCodeValid = response.valid;
+      if (this.isCodeValid) {
+        this.discount = response.discount;
+      }
     } catch (error) {
       console.error(error);
       this.error = error;
@@ -103,8 +112,8 @@ export class CartPageComponent implements OnInit {
     try {
       this.error = null;
       this.isLoadingOrder = true;
-      await this.orderService.placeOrder(this.discountCode);
-      await this.router.navigate(['/']);
+      await this.orderService.placeOrder(this.discountCode, this.cartProducts, this.subtotal);
+      await this.router.navigate(['/orders']);
     } catch (error) {
       console.error(error);
       this.error = error;

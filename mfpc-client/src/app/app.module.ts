@@ -20,6 +20,8 @@ import { CartLineComponent } from './components/cart-line/cart-line.component';
 import { ProductActionsComponent } from './components/product-actions/product-actions.component';
 import { FormsModule } from '@angular/forms';
 import { ErrorComponent } from './components/error/error.component';
+import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
+import { ButtonSpinnerDirective } from './components/button-spinner.directive';
 
 registerLocaleData(localeRo);
 
@@ -43,6 +45,8 @@ const materialModules = [
     CartLineComponent,
     ProductActionsComponent,
     ErrorComponent,
+    OrdersPageComponent,
+    ButtonSpinnerDirective,
   ],
   imports: [
     BrowserModule,
