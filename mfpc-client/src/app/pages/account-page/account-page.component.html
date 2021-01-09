@@ -1,4 +1,30 @@
 <section class="page-wrap" *ngIf="user">
-	<h1>Hello, {{ user.name }}!</h1>
-	<button mat-raised-button color="primary" (click)="authService.logout()">Sign out</button>
+	<section class="title">
+		<h1>Hello, {{ user.name }}!</h1>
+		<button mat-raised-button color="primary" (click)="authService.logout()">Sign out</button>
+	</section>
+
+	<h3>You have <span class="points">{{ user.points }}</span> points</h3>
+
+	<hr>
+
+	<h2>My discount codes</h2>
+	<section class="my-codes">
+		<p *ngIf="!user.discountCodes || user.discountCodes.length === 0">You don't have any discount codes</p>
+		<ul *ngIf="user.discountCodes">
+			<li *ngFor="let code of user.discountCodes">
+				<strong>{{ code.code }}</strong> ({{ code.discount }}%)
+			</li>
+		</ul>
+	</section>
+
+	<h2>Add a discount code</h2>
+	<section class="add-discount-code">
+		<mat-form-field appearance="outline">
+			<mat-label>Discount code</mat-label>
+			<input matInput [(ngModel)]="discountCode">
+		</mat-form-field>
+		<button mat-flat-button type="button" color="accent" (click)="addDiscountCode()" [disabled]="!discountCode">Add
+			code</button>
+	</section>
 </section>

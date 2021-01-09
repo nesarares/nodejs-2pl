@@ -26,6 +26,8 @@ export class AuthService {
       _id: 'user123',
       name: 'Rares',
       email: 'rares@test.com',
+      points: 23,
+      discountCodes: [{ _id: 'abc', code: 'MYDISC', discount: 25 }],
     };
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
     this.router.navigate([returnUrl || '/account']);
@@ -45,5 +47,22 @@ export class AuthService {
       localStorage.removeItem('user');
     }
     this.userSubject.next(this.user);
+  }
+
+  async getMe(): Promise<User> {
+    return this.user;
+  }
+
+  async addDiscountCode(code: string) {
+    code = code.toUpperCase();
+    if (!this.user.discountCodes) {
+      this.user.discountCodes = [];
+    }
+
+    this.user.discountCodes.push({
+      _id: 'abc',
+      code,
+      discount: 10,
+    });
   }
 }

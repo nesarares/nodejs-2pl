@@ -1,0 +1,30 @@
+.title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    margin: 0;
+  }
+
+  button {
+    margin-left: 3rem;
+  }
+}
+
+.points {
+	color: var(--color-primary);
+}
+
+.add-discount-code {
+  display: flex;
+	align-items: center;
+	
+	input {
+		text-transform: uppercase;
+	}
+
+  button {
+    margin-left: 2rem;
+  }
+}

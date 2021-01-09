@@ -11,12 +11,35 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class AccountPageComponent implements OnInit {
   user: User;
+  discountCode: string;
+
+  error: any;
 
   constructor(public authService: AuthService) {}
 
-  ngOnInit(): void {
-    this.authService.user$.pipe(untilDestroyed(this)).subscribe((user) => {
-      this.user = user;
-    });
+  ngOnInit() {
+    this.loadUser();
+  }
+
+  async loadUser() {
+    try {
+      this.error = null;
+      this.user = await this.authService.getMe();
+    } catch (error) {
+      console.error(error);
+      this.error = error;
+    }
+  }
+
+  async addDiscountCode() {
+    try {
+      this.error = null;
+      await this.authService.addDiscountCode(this.discountCode);
+      this.discountCode = null;
+      this.loadUser();
+    } catch (error) {
+      console.error(error);
+      this.error = error;
+    }
   }
 }
