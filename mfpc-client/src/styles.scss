@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --font-family: "Inter", "Helvetica Neue", sans-serif;
+  --color-primary: #673ab7;
+  --color-accent: #ffd740;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+}

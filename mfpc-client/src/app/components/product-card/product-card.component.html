@@ -1,0 +1,22 @@
+<mat-card>
+	<div class="img-container">
+		<img [src]="product.imageUrl" [alt]="product.name">
+	</div>
+	<mat-card-content>
+		<mat-card-title>{{ product.name }}</mat-card-title>
+		<mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
+		<p class="description" *ngIf="product.description">{{ product.description |
+			slice:0:150}}{{(product.description.length > 150 ? '...' : '')}}</p>
+	</mat-card-content>
+	<mat-card-actions>
+		<button *ngIf="!isInCart" mat-flat-button color="primary" class="add-to-cart"
+			(click)="cartService.addToCart(product._id, 1)">
+			Add to cart
+		</button>
+		<div class="in-cart" *ngIf="isInCart">
+			<button mat-flat-button color="accent" (click)="cartService.addToCart(product._id, -1)">-</button>
+			<span>{{ cartAmount }}</span>
+			<button mat-flat-button color="accent" (click)="cartService.addToCart(product._id, 1)">+</button>
+		</div>
+	</mat-card-actions>
+</mat-card>

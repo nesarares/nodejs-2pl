@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+	<img class="logo" src="../../../assets/logo.png" alt="logo">
+	<span>DrinkGrizzly</span>
+	<span class="spacer"></span>
+	<button mat-button routerLink="/">
+		Products
+	</button>
+	<button mat-icon-button class="cart-button" routerLink="/cart">
+		<mat-icon [matBadge]="cartAmount" [matBadgeHidden]="cartAmount <= 0" matBadgeColor="accent">shopping_cart</mat-icon>
+	</button>
+</mat-toolbar>
