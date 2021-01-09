@@ -2,6 +2,8 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,6 +18,8 @@ import { registerLocaleData } from '@angular/common';
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { CartLineComponent } from './components/cart-line/cart-line.component';
 import { ProductActionsComponent } from './components/product-actions/product-actions.component';
+import { FormsModule } from '@angular/forms';
+import { ErrorComponent } from './components/error/error.component';
 
 registerLocaleData(localeRo);
 
@@ -25,6 +29,8 @@ const materialModules = [
   MatButtonModule,
   MatCardModule,
   MatBadgeModule,
+  MatFormFieldModule,
+  MatInputModule,
 ];
 
 @NgModule({
@@ -36,11 +42,13 @@ const materialModules = [
     CartPageComponent,
     CartLineComponent,
     ProductActionsComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
     ...materialModules,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'ro' }],

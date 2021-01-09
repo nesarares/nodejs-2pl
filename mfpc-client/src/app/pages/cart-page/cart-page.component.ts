@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Subject } from 'rxjs';
 import { Cart } from 'src/app/models/cart';
 import { Product } from 'src/app/models/product';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
+import { debounceTime } from 'rxjs/operators';
+import { OrderService } from 'src/app/services/order.service';
+import { ThrowStmt } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -15,13 +20,22 @@ export class CartPageComponent implements OnInit {
   cart: Cart;
   cartProducts: { amount: number; product: Product }[];
   products: Product[];
+  subtotal: number;
+  discountCode: string;
+
+  checkCodeSubject = new Subject();
+  isCodeValid = false;
+  codeChecked = false;
 
   isLoading = false;
+  isLoadingOrder = false;
   error: any;
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private orderService: OrderService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -34,10 +48,15 @@ export class CartPageComponent implements OnInit {
         }
         await this.filterProducts();
       });
+
+    this.checkCodeSubject.pipe(debounceTime(400)).subscribe(() => {
+      this.checkDiscountCode();
+    })
   }
 
   async loadProducts() {
     try {
+      this.error = null;
       this.isLoading = true;
       const products = await this.productService.getProductsById(
         this.cart.items.map((i) => i._id)
@@ -60,5 +79,37 @@ export class CartPageComponent implements OnInit {
         product: this.products.find((p) => p._id === item._id),
       });
     });
+    this.subtotal = this.cartProducts.reduce(
+      (acc, prod) => (acc += prod.amount * prod.product.price),
+      0
+    );
+  }
+
+  async checkDiscountCode() {
+    try {
+      this.error = null;
+      this.codeChecked = false;
+      this.isCodeValid = await this.orderService.checkDiscountCode(this.discountCode);
+    } catch (error) {
+      console.error(error);
+      this.error = error;
+      this.isCodeValid = false;
+    } finally {
+      this.codeChecked = true;
+    }
+  }
+
+  async placeOrder() {
+    try {
+      this.error = null;
+      this.isLoadingOrder = true;
+      await this.orderService.placeOrder(this.discountCode);
+      await this.router.navigate(['/']);
+    } catch (error) {
+      console.error(error);
+      this.error = error;
+    } finally {
+      this.isLoadingOrder = false;
+    }
   }
 }

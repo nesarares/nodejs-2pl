@@ -1,5 +1,6 @@
 <section class="page-wrap">
 	<h1>Shop drinks</h1>
+	<app-error [error]="error"></app-error>
 	<section class="products">
 		<app-product-card *ngFor="let product of products" [product]="product"></app-product-card>
 	</section>

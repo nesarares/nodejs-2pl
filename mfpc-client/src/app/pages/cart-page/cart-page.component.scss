@@ -1,3 +1,8 @@
+.page-wrap {
+	display: flex;
+	flex-direction: column;
+}
+
 .empty-placeholder {
   display: flex;
   flex-direction: column;
@@ -21,4 +26,39 @@
 	display: grid;
 	grid-template-columns: auto;
 	gap: 0.5rem;
+}
+
+.subtotal {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	p {
+		margin: 0 4rem 0 0;
+		font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+	}
+}
+
+.actions {
+	margin-right: 2rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	
+	.order-button {
+		padding: 0 3rem;
+	}
+}
+
+.discount {
+	mat-icon {
+		margin-left: 1rem;
+	}
+
+	input {
+		text-transform: uppercase;
+	}
 }

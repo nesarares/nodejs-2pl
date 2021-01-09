@@ -1,13 +1,34 @@
 <section class="page-wrap">
-<section class="empty-placeholder" *ngIf="!cart || cart.items.length == 0; else cartView">
-	<img src="../../../assets/empty-cart.png">
-	<p>Your cart is empty. Add some products!</p>
-</section>
-
-<ng-template #cartView>
-	<h1>Cart</h1>
-	<section class="cart" *ngIf="cartProducts">
-		<app-cart-line *ngFor="let product of cartProducts" [product]="product.product" [amount]="product.amount"></app-cart-line>
+	<section class="empty-placeholder" *ngIf="!cart || cart.items.length == 0; else cartView">
+		<img src="../../../assets/empty-cart.png">
+		<p>Your cart is empty. Add some products!</p>
 	</section>
-</ng-template>
+
+	<ng-template #cartView>
+		<h1>Cart</h1>
+
+		<app-error [error]="error"></app-error>
+
+		<section class="cart" *ngIf="cartProducts">
+			<app-cart-line *ngFor="let product of cartProducts" [product]="product.product" [amount]="product.amount">
+			</app-cart-line>
+		</section>
+		
+		<section class="subtotal">
+			<h2>Subtotal</h2>
+			<p>{{ subtotal | currency:'RON' }}</p>
+		</section>
+		
+		<div class="actions">
+			<div class="discount">
+				<mat-form-field appearance="outline">
+					<mat-label>Discount code</mat-label>
+					<input matInput [(ngModel)]="discountCode" (ngModelChange)="codeChecked = false; checkCodeSubject.next()">
+				</mat-form-field>
+				<mat-icon *ngIf="discountCode && codeChecked && isCodeValid" color="primary">check_circle</mat-icon>
+				<mat-icon *ngIf="discountCode && codeChecked && !isCodeValid" color="warn">cancel</mat-icon>
+			</div>
+			<button class="order-button" mat-raised-button color="primary" (click)="placeOrder()">Place order</button>
+		</div>
+	</ng-template>
 </section>

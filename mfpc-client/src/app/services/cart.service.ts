@@ -47,4 +47,12 @@ export class CartService {
       this.cartChanged();
     }
   }
+
+  public emptyCart() {
+    this.cart = {
+      items: [],
+      amount: 0
+    };
+    this.cartChanged();
+  }
 }
