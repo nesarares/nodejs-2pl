@@ -3,8 +3,16 @@
 }
 
 .logo {
-	height: 40px;
-	margin-right: 1rem;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	outline: none;
+	border: none;
+
+	img {
+		height: 40px;
+		margin-right: 1rem;
+	}
 }
 
 button:not(:last-child) {

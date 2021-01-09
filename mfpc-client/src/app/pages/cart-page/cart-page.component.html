@@ -1,0 +1,13 @@
+<section class="page-wrap">
+<section class="empty-placeholder" *ngIf="!cart || cart.items.length == 0; else cartView">
+	<img src="../../../assets/empty-cart.png">
+	<p>Your cart is empty. Add some products!</p>
+</section>
+
+<ng-template #cartView>
+	<h1>Cart</h1>
+	<section class="cart" *ngIf="cartProducts">
+		<app-cart-line *ngFor="let product of cartProducts" [product]="product.product" [amount]="product.amount"></app-cart-line>
+	</section>
+</ng-template>
+</section>

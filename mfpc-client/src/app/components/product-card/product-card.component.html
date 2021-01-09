@@ -10,14 +10,6 @@
 	</mat-card-content>
 	<p class="price">{{ product.price | currency:'RON' }}</p>
 	<mat-card-actions>
-		<button *ngIf="!isInCart" mat-flat-button color="primary" class="add-to-cart"
-			(click)="cartService.addToCart(product._id, 1)">
-			Add to cart
-		</button>
-		<div class="in-cart" *ngIf="isInCart">
-			<button mat-flat-button color="accent" (click)="cartService.addToCart(product._id, -1)">-</button>
-			<span>{{ cartAmount }}</span>
-			<button mat-flat-button color="accent" (click)="cartService.addToCart(product._id, 1)">+</button>
-		</div>
+		<app-product-actions [productId]="product._id"></app-product-actions>
 	</mat-card-actions>
 </mat-card>

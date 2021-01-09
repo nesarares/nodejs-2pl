@@ -3,4 +3,5 @@ export interface Cart {
 		_id: string;
 		amount: number;
 	}[];
+	amount: number;
 }

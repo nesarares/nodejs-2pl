@@ -15,7 +15,7 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartService.cart$.pipe(untilDestroyed(this)).subscribe(cart => {
-      this.cartAmount = cart?.items?.reduce(((acc, item) => acc += item.amount), 0) ?? 0;
+      this.cartAmount = cart.amount;
     })
   }
 

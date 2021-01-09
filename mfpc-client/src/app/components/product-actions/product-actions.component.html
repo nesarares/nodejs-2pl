@@ -1,0 +1,9 @@
+<button *ngIf="!isInCart" mat-flat-button color="primary" class="add-to-cart"
+	(click)="cartService.addToCart(productId, 1)">
+	Add to cart
+</button>
+<div class="in-cart" *ngIf="isInCart">
+	<button mat-flat-button color="accent" (click)="cartService.addToCart(productId, -1)">-</button>
+	<span>{{ cartAmount }}</span>
+	<button mat-flat-button color="accent" (click)="cartService.addToCart(productId, 1)">+</button>
+</div>

@@ -14,13 +14,14 @@ export class CartService {
   constructor() {
     let cart: Cart = JSON.parse(localStorage.getItem('cart'));
     if (!cart || !cart.items) {
-      cart = { items: [] };
+      cart = { items: [], amount: 0 };
     }
     this.cart = cart;
     this.cartChanged();
   }
 
   private cartChanged() {
+    this.cart.amount = this.cart?.items?.reduce(((acc, item) => acc += item.amount), 0) ?? 0;
     this.cartSubject.next(this.cart);
     localStorage.setItem('cart', JSON.stringify(this.cart));
   }

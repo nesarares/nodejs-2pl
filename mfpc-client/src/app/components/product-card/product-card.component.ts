@@ -12,22 +12,10 @@ import { CartService } from 'src/app/services/cart.service';
 export class ProductCardComponent implements OnInit {
   @Input() product: Product;
 
-  isInCart = false;
-  cartAmount = 0;
 
-  constructor(public cartService: CartService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.cartService.cart$.pipe(untilDestroyed(this)).subscribe((cart) => {
-      const foundInCart = cart.items.find(
-        (item) => item._id === this.product?._id
-      );
-      if (foundInCart) {
-        this.isInCart = true;
-        this.cartAmount = foundInCart.amount;
-      } else {
-        this.isInCart = false;
-      }
-    });
+    
   }
 }

@@ -62,4 +62,8 @@ Volum 500ml`,
   async getProducts() {
     return this.products;
   }
+
+  async getProductsById(ids: string[]) {
+    return this.products.filter(p => ids.includes(p._id));
+  }
 }

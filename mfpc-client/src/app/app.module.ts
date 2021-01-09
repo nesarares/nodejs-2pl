@@ -13,6 +13,9 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { ProductsPageComponent } from './pages/products-page/products-page.component';
 import localeRo from '@angular/common/locales/ro';
 import { registerLocaleData } from '@angular/common';
+import { CartPageComponent } from './pages/cart-page/cart-page.component';
+import { CartLineComponent } from './components/cart-line/cart-line.component';
+import { ProductActionsComponent } from './components/product-actions/product-actions.component';
 
 registerLocaleData(localeRo);
 
@@ -30,6 +33,9 @@ const materialModules = [
     ToolbarComponent,
     ProductsPageComponent,
     ProductCardComponent,
+    CartPageComponent,
+    CartLineComponent,
+    ProductActionsComponent,
   ],
   imports: [
     BrowserModule,

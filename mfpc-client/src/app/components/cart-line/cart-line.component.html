@@ -1,0 +1,13 @@
+<mat-card *ngIf="product">
+	<div class="img-container">
+		<img [src]="product.imageUrl" [alt]="product.name">
+	</div>
+	<div class="product-info">
+		<mat-card-title>{{ product.name }}</mat-card-title>
+		<mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
+	</div>
+	<div class="product-quantity">
+		<p class="price">{{ product.price * amount | currency:'RON' }}</p>
+		<app-product-actions [productId]="product._id"></app-product-actions>
+	</div>
+</mat-card>
