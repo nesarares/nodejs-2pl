@@ -8,6 +8,7 @@
 		<p class="description" *ngIf="product.description">{{ product.description |
 			slice:0:150}}{{(product.description.length > 150 ? '...' : '')}}</p>
 	</mat-card-content>
+	<p class="price">{{ product.price | currency:'RON' }}</p>
 	<mat-card-actions>
 		<button *ngIf="!isInCart" mat-flat-button color="primary" class="add-to-cart"
 			(click)="cartService.addToCart(product._id, 1)">
