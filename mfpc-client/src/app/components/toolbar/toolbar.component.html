@@ -4,9 +4,10 @@
 		<span>DrinkGrizzly</span>
 	</span>
 	<span class="spacer"></span>
-	<button mat-button routerLink="/">
-		Products
-	</button>
+
+	<button mat-button routerLink="/">Products</button>
+	<button mat-button routerLink="/orders">Orders</button>
+	
 	<button mat-icon-button class="cart-button" routerLink="/cart">
 		<mat-icon [matBadge]="cartAmount" [matBadgeHidden]="cartAmount <= 0" matBadgeColor="accent">shopping_cart</mat-icon>
 	</button>

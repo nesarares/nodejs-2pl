@@ -11,5 +11,8 @@ export interface Order {
     amount: number;
   }[];
   subtotal: number;
+  discount?: number;
+  total: number;
   discountCode: string;
+  created: Date;
 }

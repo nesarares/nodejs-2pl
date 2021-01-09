@@ -1,1 +1,24 @@
-<p>orders-page works!</p>
+<section class="page-wrap">
+	<app-error [error]="error"></app-error>
+
+	<section class="orders" *ngIf="orders">
+		<mat-card class="order" *ngFor="let order of orders; index as i">
+			<p class="date">{{ order.created | date:'medium' }}</p>
+			<app-cart-line *ngFor="let product of order.products" [product]="product" [view]="true"></app-cart-line>
+			<table class="details">
+				<tr>
+					<td>Subtotal</td>
+					<td>{{ order.subtotal | currency:'RON' }}</td>
+				</tr>
+				<tr>
+					<td>Discount <strong *ngIf="order.discountCode">({{order.discountCode}})</strong></td>
+					<td>{{ order.discount || 0 | currency:'RON' }}</td>
+				</tr>
+				<tr>
+					<td>Total</td>
+					<td>{{ order.total | currency:'RON' }}</td>
+				</tr>
+			</table>
+		</mat-card>
+	</section>
+</section>

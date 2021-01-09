@@ -112,7 +112,7 @@ export class CartPageComponent implements OnInit {
     try {
       this.error = null;
       this.isLoadingOrder = true;
-      await this.orderService.placeOrder(this.discountCode, this.cartProducts, this.subtotal);
+      await this.orderService.placeOrder(this.discountCode, this.cartProducts, this.subtotal, this.discountPrice);
       await this.router.navigate(['/orders']);
     } catch (error) {
       console.error(error);

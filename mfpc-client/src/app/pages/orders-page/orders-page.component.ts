@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Order } from 'src/app/models/order';
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-orders-page',
@@ -6,10 +8,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./orders-page.component.scss']
 })
 export class OrdersPageComponent implements OnInit {
+  orders: Order[];
 
-  constructor() { }
+  error: any;
 
-  ngOnInit(): void {
+  constructor(private orderService: OrderService) { }
+
+  async ngOnInit() {
+    try {
+      this.error = null;
+      this.orders = await this.orderService.getOrders();
+    } catch (error) {
+      this.error = error;
+    }
   }
 
 }

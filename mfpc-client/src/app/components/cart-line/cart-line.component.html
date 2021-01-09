@@ -6,8 +6,13 @@
 		<mat-card-title>{{ product.name }}</mat-card-title>
 		<mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
 	</div>
-	<div class="product-quantity">
+
+	<div class="product-quantity" *ngIf="!view">
 		<p class="price">{{ product.price * amount | currency:'RON' }}</p>
 		<app-product-actions [productId]="product._id"></app-product-actions>
+	</div>
+	
+	<div class="product-quantity" *ngIf="view">
+		<p class="price">{{ product.amount }} x {{ product.price | currency:'RON' }}</p>
 	</div>
 </mat-card>
