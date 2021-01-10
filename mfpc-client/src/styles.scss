@@ -1,10 +1,21 @@
+@import '~@angular/material/theming';
+
 :root {
-  --font-family: "Inter", "Helvetica Neue", sans-serif;
+  --font-family: "Quicksand", "Helvetica Neue", sans-serif;
+  --font-family-secondary: "Inter", "Helvetica Neue", sans-serif;
   --color-primary: #673ab7;
   --color-accent: #ffd740;
   --color-warn: #f44336;
   --shadow: 0px 3px 8px 0 rgba(65, 65, 65, 0.25);
 }
+
+// Define a custom typography config that overrides the font-family as well as the
+// `headlines` and `body-1` levels.
+$custom-typography: mat-typography-config(
+  $font-family: '"Quicksand", "Helvetica Neue", sans-serif',
+);
+
+@include angular-material-typography($custom-typography);
 
 * {
   box-sizing: border-box;
@@ -30,7 +41,7 @@ h1 {
   font-size: 3rem;
   font-weight: 800;
   margin: 0 0 2rem;
-  font-family: Inter;
+  font-family: var(--font-family-secondary);
 }
 
 .page-wrap {
