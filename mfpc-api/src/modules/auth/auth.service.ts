@@ -5,6 +5,8 @@ import * as jwt from 'jsonwebtoken';
 import * as config from 'config';
 import { User } from './models/user.model';
 import { ObjectId } from 'mongodb';
+import { MongoUtils } from 'src/shared/utils/mongo.utils';
+import e from 'express';
 
 const SALT_ROUNDS = 10;
 const jwtSecret = config.get<string>('jwt.secret');
@@ -30,11 +32,31 @@ export class AuthService {
     });
   }
 
-  public async verifyToken(token: string): Promise<{ valid: boolean; decoded?: any }> {
+  public async verifyToken(token: string): Promise<{ valid: boolean; user?: User }> {
     return new Promise((resolve) => {
-      jwt.verify(token, jwtSecret, {}, (err, decoded) => {
+      jwt.verify(token, jwtSecret, {}, async (err, decoded: any) => {
         if (err) resolve({ valid: false });
-        else resolve({ valid: true, decoded });
+        else {
+          try {
+            const queryResult = await this.db.sessions
+              .aggregate([
+                { $match: { token } },
+                ...MongoUtils.buildLookup('users', 'uid', '_id', 'user', true, false),
+                { $replaceRoot: { newRoot: '$user' } },
+                { $project: { password: 0 } },
+              ])
+              .toArray();
+
+            if (!queryResult || queryResult.length === 0 || queryResult[0]._id?.toString() !== decoded.uid) {
+              resolve({ valid: false });
+            } else {
+              resolve({ valid: true, user: queryResult[0] });
+            }
+          } catch (error) {
+            console.error(error);
+            resolve({ valid: false });
+          }
+        }
       });
     });
   }
@@ -57,7 +79,18 @@ export class AuthService {
 
     const token = await this.getToken(user);
     delete user.password;
+
+    await this.db.sessions.insertOne({
+      uid: user._id,
+      token,
+      created: new Date(),
+    });
+
     return { user, token };
+  }
+
+  public async logout(token: string) {
+    await this.db.sessions.deleteOne({ token });
   }
 
   public async getUserById(id: string) {

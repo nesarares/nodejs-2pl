@@ -9,6 +9,8 @@ import * as config from 'config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
+  app.enableCors();
+
   const port = config.get<number>('server.port');
   await app.listen(port);
 }

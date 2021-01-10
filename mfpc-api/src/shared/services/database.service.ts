@@ -9,6 +9,7 @@ export class DatabaseService {
 	public mainDb: Db;
 	
 	public users: Collection;
+	public sessions: Collection;
 
   constructor() {
     const url = config.get<string>('mongo.url');
@@ -30,6 +31,7 @@ export class DatabaseService {
 			this.mainDb = this.client.db('main');
 
 			this.users = this.authDb.collection('users');
+			this.sessions = this.authDb.collection('sessions');
     } catch (err) {
       console.error(err);
     }
