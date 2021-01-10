@@ -5,4 +5,7 @@ module.exports = {
   mongo: {
     url: '',
   },
+  jwt: {
+    secret: ''
+  }
 };

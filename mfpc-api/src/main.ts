@@ -1,9 +1,9 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import * as path from 'path';
 
 process.env['NODE_CONFIG_DIR'] = path.join(__dirname, 'config') + path.sep;
 
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
 import * as config from 'config';
 
 async function bootstrap() {
