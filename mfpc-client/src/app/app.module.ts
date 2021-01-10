@@ -24,6 +24,8 @@ import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { ButtonSpinnerDirective } from './components/button-spinner.directive';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { AccountPageComponent } from './pages/account-page/account-page.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 registerLocaleData(localeRo);
 
@@ -57,9 +59,13 @@ const materialModules = [
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
     ...materialModules,
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'ro' }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'ro' },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
