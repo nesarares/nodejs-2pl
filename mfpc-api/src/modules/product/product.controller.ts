@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { Product } from './models/product.model';
 import { ProductService } from './product.service';
 
@@ -7,8 +7,12 @@ export class ProductController {
 	constructor(private productService: ProductService) {}
 
 	@Get()
-	public async getProducts(): Promise<Product[]> {
-		return this.productService.getProducts();
+	public async getProducts(@Query('ids') ids: string): Promise<Product[]> {
+		const filter: any = {};
+		if (ids) {
+			filter.ids = ids.split(',');
+		}
+		return this.productService.getProducts(filter);
 	}
 
 	@Post()

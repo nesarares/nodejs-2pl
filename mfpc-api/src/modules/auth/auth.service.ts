@@ -94,7 +94,7 @@ export class AuthService {
   }
 
   public async getUserById(id: string) {
-    const user = await this.db.users.findOne<User>({ _id: new ObjectId(id) }, { projection: { password: 0 } });
+    const user = await this.db.users.findOne<User>({ _id: MongoUtils.toObjectId(id) }, { projection: { password: 0 } });
     return user;
   }
 }
