@@ -12,6 +12,7 @@ export class DatabaseService {
   public users: Collection;
   public sessions: Collection;
   public products: Collection;
+  public discountCodes: Collection;
 
   constructor() {
     const url = config.get<string>('mongo.url');
@@ -35,6 +36,7 @@ export class DatabaseService {
       this.users = this.authDb.collection('users');
       this.sessions = this.authDb.collection('sessions');
       this.products = this.mainDb.collection('products');
+      this.discountCodes = this.mainDb.collection('discount-codes');
     } catch (err) {
       console.error(err);
     }
