@@ -8,6 +8,8 @@
 
 	<hr>
 
+	<app-error [error]="error"></app-error>
+
 	<h2>My discount codes</h2>
 	<section class="my-codes">
 		<p *ngIf="!user.discountCodes || user.discountCodes.length === 0">You don't have any discount codes</p>

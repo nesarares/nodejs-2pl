@@ -69,15 +69,6 @@ export class AuthService {
   }
 
   async addDiscountCode(code: string) {
-    code = code.toUpperCase();
-    if (!this.user.discountCodes) {
-      this.user.discountCodes = [];
-    }
-
-    this.user.discountCodes.push({
-      _id: 'abc',
-      code,
-      discount: 10,
-    });
+    return this.http.post('discount-codes/me', { code }).toPromise();
   }
 }
