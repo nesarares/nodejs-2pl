@@ -39,8 +39,20 @@ export class DatabaseService {
       this.products = this.mainDb.collection('products');
       this.discountCodes = this.mainDb.collection('discount-codes');
       this.orders = this.mainDb.collection('orders');
+
+      await this.setIndexes();
     } catch (err) {
       console.error(err);
     }
+  }
+
+  private async setIndexes() {
+    await Promise.all([
+      this.users.createIndex({ email: 1 }),
+      this.sessions.createIndex({ token: 1 }),
+      this.products.createIndex({ name: 1 }),
+      this.orders.createIndex({ userId: 1, created: -1 }),
+      this.discountCodes.createIndex({ code: 1 }),
+    ])
   }
 }

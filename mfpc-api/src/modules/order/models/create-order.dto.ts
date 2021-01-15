@@ -8,7 +8,7 @@ export class ProductDto {
 
   @IsNumber()
   @Min(1)
-  quantity: number;
+  amount: number;
 }
 
 export class CreateOrderDto {

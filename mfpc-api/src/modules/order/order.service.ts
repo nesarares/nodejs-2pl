@@ -12,7 +12,7 @@ export class OrderService {
   constructor(private db: DatabaseService) {}
 
   public async getUserOrders(user: User) {
-    return this.db.orders.find({ userId: user._id });
+    return this.db.orders.find({ userId: user._id }).sort({ created: -1 });
   }
 
   public async addOrder(order: CreateOrderDto, user: User) {
@@ -36,7 +36,7 @@ export class OrderService {
     const orderProducts: Order['products'] = products.map((product) => {
       return {
         ...product,
-        amount: order.products.find((p) => p._id === product._id?.toString()).quantity,
+        amount: order.products.find((p) => p._id === product._id?.toString()).amount,
       };
     });
 
