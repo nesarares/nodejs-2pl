@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Collection, Db, MongoClient } from 'mongodb';
 import * as config from 'config';
+import { Collection, Db, MongoClient } from 'mongodb';
 
 @Injectable()
 export class DatabaseService {
@@ -13,6 +13,7 @@ export class DatabaseService {
   public sessions: Collection;
   public products: Collection;
   public discountCodes: Collection;
+  public orders: Collection;
 
   constructor() {
     const url = config.get<string>('mongo.url');
@@ -37,6 +38,7 @@ export class DatabaseService {
       this.sessions = this.authDb.collection('sessions');
       this.products = this.mainDb.collection('products');
       this.discountCodes = this.mainDb.collection('discount-codes');
+      this.orders = this.mainDb.collection('orders');
     } catch (err) {
       console.error(err);
     }

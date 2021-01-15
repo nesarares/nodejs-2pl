@@ -27,14 +27,24 @@ graph TD
 	subgraph orderFlow [Order flow]
 		lockDiscounts[Lock Discounts] 
 		--> checkDiscount2([Check if discount code is valid]) 
+		--> lockProducts[Lock Products]
+		--> checkProducts([Get all order products])
 		--> lockOrders[Lock Orders] 
 		--> addOrder([Add order]) 
 		--> lockUsers[Lock Users] 
 		--> updateUser([Update user points]) 
-		--> updateUser3([Update user discounts]) 
 		--> decreaseDiscount([Decrease discount code uses]) 
 		--> unlockDiscounts[Unlock Discounts] 
 		--> unlockOrders[Unlock Orders] 
 		--> unlockUsers[Unlock Users]
 	end
+```
+
+## Deadlock case
+
+- Place order (T1) and Add discount code (T2) at the same time:
+
+```mermaid
+graph LR
+	a[T1 Lock discounts]-->b[T2 Lock users]-->c[...]-->d[T1 Request lock users]-->e[T2 Request lock discounts]
 ```

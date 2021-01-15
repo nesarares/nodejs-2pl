@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb';
 
 export interface Order {
   _id?: string | ObjectId;
+  userId: string | ObjectId;
   products: {
     _id: string;
     name: string;
@@ -13,6 +14,6 @@ export interface Order {
   subtotal: number;
   discount?: number;
   total: number;
-  discountCode: string;
+  discountCode?: string;
   created: Date;
 }

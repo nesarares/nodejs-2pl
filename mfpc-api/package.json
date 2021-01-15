@@ -20,6 +20,8 @@
     "@types/morgan": "^1.9.2",
     "bcrypt": "^5.0.0",
     "chalk": "^4.1.0",
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.13.0",
     "config": "^3.3.3",
     "console-stamp": "^3.0.0-rc4.2",
     "dayjs": "^1.10.3",

@@ -11,18 +11,16 @@ import * as consoleStamp from 'console-stamp';
 import * as chalk from 'chalk';
 
 consoleStamp(console, {
-  format: ':date(yyyy-mm-dd HH:MM:ss).green'
+  format: ':date(yyyy-mm-dd HH:MM:ss).green',
 });
 
 morgan.token('customDate', () => chalk.green(`[${TimeUtils.nowFormatted}]`));
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: false
-  });
+  const app = await NestFactory.create(AppModule, {});
   app.setGlobalPrefix('api');
   app.enableCors();
-  app.use(morgan(`:customDate :method ${chalk.yellow(':url')} :status :response-time ms - :res[content-length] B`))
+  app.use(morgan(`:customDate :method ${chalk.yellow(':url')} :status :response-time ms - :res[content-length] B`));
 
   const port = config.get<number>('server.port');
   await app.listen(port);
