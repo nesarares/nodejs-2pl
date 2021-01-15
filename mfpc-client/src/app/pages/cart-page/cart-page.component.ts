@@ -54,20 +54,25 @@ export class CartPageComponent implements OnInit {
 
     this.checkCodeSubject.pipe(debounceTime(400)).subscribe(() => {
       this.checkDiscountCode();
-    })
+    });
   }
 
   get discountPrice() {
-    return this.discountCode && this.codeChecked && this.isCodeValid ? (this.subtotal * this.discount / 100) : 0;
+    return this.discountCode && this.codeChecked && this.isCodeValid
+      ? (this.subtotal * this.discount) / 100
+      : 0;
   }
 
   async loadProducts() {
     try {
       this.error = null;
       this.isLoading = true;
-      const products = await this.productService.getProductsById(
-        this.cart.items.map((i) => i._id)
-      );
+      const products =
+        this.cart.items.length > 0
+          ? await this.productService.getProductsById(
+              this.cart.items.map((i) => i._id)
+            )
+          : [];
       this.products = products.sort((p1, p2) => p1.name.localeCompare(p2.name));
     } catch (err) {
       console.error(err);
@@ -96,7 +101,9 @@ export class CartPageComponent implements OnInit {
     try {
       this.error = null;
       this.codeChecked = false;
-      const response = await this.orderService.checkDiscountCode(this.discountCode);
+      const response = await this.orderService.checkDiscountCode(
+        this.discountCode
+      );
       this.isCodeValid = response.valid;
       if (this.isCodeValid) {
         this.discount = response.discount;
@@ -114,7 +121,7 @@ export class CartPageComponent implements OnInit {
     try {
       this.error = null;
       this.isLoadingOrder = true;
-      await this.orderService.placeOrder(this.discountCode, this.cartProducts, this.subtotal, this.discountPrice);
+      await this.orderService.placeOrder(this.discountCode);
       await this.router.navigate(['/orders']);
     } catch (error) {
       console.error(error);

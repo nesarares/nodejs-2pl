@@ -24,7 +24,7 @@
 	<section class="add-discount-code">
 		<mat-form-field appearance="outline">
 			<mat-label>Discount code</mat-label>
-			<input matInput [(ngModel)]="discountCode">
+			<input matInput [(ngModel)]="discountCode" (keyup.enter)="addDiscountCode()">
 		</mat-form-field>
 		<button mat-flat-button type="button" color="accent" (click)="addDiscountCode()" [disabled]="!discountCode">Add
 			code</button>
