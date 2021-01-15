@@ -11,6 +11,10 @@ import { Order } from './models/order.model';
 export class OrderService {
   constructor(private db: DatabaseService) {}
 
+  public async getUserOrders(user: User) {
+    return this.db.orders.find({ userId: user._id });
+  }
+
   public async addOrder(order: CreateOrderDto, user: User) {
     // Check if discount code is valid
     let discount: DiscountCode;
