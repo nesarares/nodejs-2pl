@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseService } from './services/database.service';
@@ -10,7 +10,9 @@ import { DiscountCodeService } from './services/discount-code.service';
 import { DiscountCodeController } from './controllers/discount-code.controller';
 import { OrderController } from './controllers/order.controller';
 import { OrderService } from './services/order.service';
+import { TransactionService } from './services/transaction.service';
 
+@Global()
 @Module({
   imports: [],
   controllers: [AppController, AuthController, ProductController, DiscountCodeController, OrderController],
