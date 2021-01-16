@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ReqUser } from 'src/shared/decorators/req-user.decorator';
-import { AuthGuard } from '../auth/auth.guard';
-import { User } from '../auth/models/user.model';
-import { CreateOrderDto } from './models/create-order.dto';
-import { OrderService } from './order.service';
+import { ReqUser } from 'src/decorators/req-user.decorator';
+import { AuthGuard } from '../guards/auth.guard';
+import { User } from '../models/user.model';
+import { CreateOrderDto } from '../dtos/create-order.dto';
+import { OrderService } from '../services/order.service';
 
 @Controller('orders')
 export class OrderController {

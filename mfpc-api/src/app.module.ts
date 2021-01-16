@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseService } from './shared/services/database.service';
-import { AuthController } from './modules/auth/auth.controller';
-import { AuthService } from './modules/auth/auth.service';
-import { ProductController } from './modules/product/product.controller';
-import { ProductService } from './modules/product/product.service';
-import { DiscountCodeService } from './modules/discount-code/discount-code.service';
-import { DiscountCodeController } from './modules/discount-code/discount-code.controller';
-import { OrderController } from './modules/order/order.controller';
-import { OrderService } from './modules/order/order.service';
+import { DatabaseService } from './services/database.service';
+import { AuthController } from './controllers/auth.controller';
+import { AuthService } from './services/auth.service';
+import { ProductController } from './controllers/product.controller';
+import { ProductService } from './services/product.service';
+import { DiscountCodeService } from './services/discount-code.service';
+import { DiscountCodeController } from './controllers/discount-code.controller';
+import { OrderController } from './controllers/order.controller';
+import { OrderService } from './services/order.service';
 
 @Module({
   imports: [],

@@ -6,7 +6,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as config from 'config';
 import * as morgan from 'morgan';
-import { TimeUtils } from './shared/utils/time.utils';
+import { TimeUtils } from './utils/time.utils';
 import * as consoleStamp from 'console-stamp';
 import * as chalk from 'chalk';
 

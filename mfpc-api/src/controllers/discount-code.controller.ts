@@ -1,9 +1,9 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ReqUser } from 'src/shared/decorators/req-user.decorator';
-import { AuthGuard } from '../auth/auth.guard';
-import { User } from '../auth/models/user.model';
-import { DiscountCodeService } from './discount-code.service';
-import { DiscountCode } from './models/discount-code.model';
+import { ReqUser } from 'src/decorators/req-user.decorator';
+import { AuthGuard } from '../guards/auth.guard';
+import { User } from '../models/user.model';
+import { DiscountCodeService } from '../services/discount-code.service';
+import { DiscountCode } from '../models/discount-code.model';
 
 @Controller('discount-codes')
 export class DiscountCodeController {

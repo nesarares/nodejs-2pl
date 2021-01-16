@@ -4,7 +4,7 @@ export interface Order {
   _id?: string | ObjectId;
   userId: string | ObjectId;
   products: {
-    _id: string;
+    _id: string | ObjectId;
     name: string;
     price: number;
     category: string;

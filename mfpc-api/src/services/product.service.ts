@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseService } from 'src/shared/services/database.service';
-import { MongoUtils } from 'src/shared/utils/mongo.utils';
-import { Product } from './models/product.model';
+import { DatabaseService } from 'src/services/database.service';
+import { MongoUtils } from 'src/utils/mongo.utils';
+import { Product } from '../models/product.model';
 
 @Injectable()
 export class ProductService {

@@ -1,12 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DatabaseService } from 'src/shared/services/database.service';
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import * as config from 'config';
-import { User } from './models/user.model';
-import { ObjectId } from 'mongodb';
-import { MongoUtils } from 'src/shared/utils/mongo.utils';
-import e from 'express';
+import * as jwt from 'jsonwebtoken';
+import { DatabaseService } from 'src/services/database.service';
+import { MongoUtils } from 'src/utils/mongo.utils';
+import { User } from '../models/user.model';
 
 const SALT_ROUNDS = 10;
 const jwtSecret = config.get<string>('jwt.secret');

@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
-import { DatabaseService } from 'src/shared/services/database.service';
-import { MongoUtils } from 'src/shared/utils/mongo.utils';
-import { User } from '../auth/models/user.model';
-import { DiscountCode } from './models/discount-code.model';
+import { DatabaseService } from 'src/services/database.service';
+import { MongoUtils } from 'src/utils/mongo.utils';
+import { User } from '../models/user.model';
+import { DiscountCode } from '../models/discount-code.model';
 
 @Injectable()
 export class DiscountCodeService {

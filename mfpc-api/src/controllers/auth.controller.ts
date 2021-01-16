@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ReqToken } from 'src/shared/decorators/req-token.decorator';
-import { ReqUser } from 'src/shared/decorators/req-user.decorator';
-import { AuthGuard } from './auth.guard';
-import { AuthService } from './auth.service';
-import { User } from './models/user.model';
+import { ReqToken } from 'src/decorators/req-token.decorator';
+import { ReqUser } from 'src/decorators/req-user.decorator';
+import { AuthGuard } from '../guards/auth.guard';
+import { AuthService } from '../services/auth.service';
+import { User } from '../models/user.model';
 
 @Controller('auth')
 export class AuthController {

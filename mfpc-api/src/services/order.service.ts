@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DatabaseService } from 'src/shared/services/database.service';
-import { MongoUtils } from 'src/shared/utils/mongo.utils';
-import { User } from '../auth/models/user.model';
-import { DiscountCode } from '../discount-code/models/discount-code.model';
-import { Product } from '../product/models/product.model';
-import { CreateOrderDto } from './models/create-order.dto';
-import { Order } from './models/order.model';
+import { DatabaseService } from 'src/services/database.service';
+import { MongoUtils } from 'src/utils/mongo.utils';
+import { User } from '../models/user.model';
+import { DiscountCode } from '../models/discount-code.model';
+import { Product } from '../models/product.model';
+import { CreateOrderDto } from '../dtos/create-order.dto';
+import { Order } from '../models/order.model';
 
 @Injectable()
 export class OrderService {
