@@ -71,6 +71,10 @@ export class AddOrderTransaction extends Transaction {
 
     await this.lock(LockType.write, 'Order');
     const response = (await this.db.orders.insertOne(toAddOrder as any))?.ops[0];
+    this.addRollbackOperation(async () => {
+      console.log({ _id: response._id });
+      await this.db.orders.deleteOne({ _id: response._id });
+    });
 
     await Utils.sleep(Utils.SLEEP_MS); // Debug for deadlock
 
@@ -81,17 +85,17 @@ export class AddOrderTransaction extends Transaction {
 
     await this.lock(LockType.write, 'User');
     await this.db.users.updateOne({ _id: user._id }, { $set: { points: newPoints } });
+    this.addRollbackOperation(async () => {
+      await this.db.users.updateOne({ _id: user._id }, { $set: userDoc });
+    });
 
     // Decrease discount code uses
-    await this.lock(LockType.write, 'DiscountCode');
-
     if (discount) {
-      await this.db.discountCodes.updateOne(
-        { _id: discount._id },
-        {
-          $set: { uses: discount.uses - 1 },
-        }
-      );
+      await this.lock(LockType.write, 'DiscountCode');
+      await this.db.discountCodes.updateOne({ _id: discount._id }, { $set: { uses: discount.uses - 1 } });
+      this.addRollbackOperation(async () => {
+        await this.db.discountCodes.updateOne({ _id: discount._id }, { $set: discount });
+      });
     }
     return response;
   }

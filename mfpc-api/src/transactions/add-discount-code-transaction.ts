@@ -37,12 +37,10 @@ export class AddDiscountCodeTransaction extends Transaction {
 
     // Decrease discount code uses
     await this.lock(LockType.write, 'DiscountCode');
-    await this.db.discountCodes.updateOne(
-      { code },
-      {
-        $set: { uses: discountCode.uses - 1 },
-      }
-    );
+    await this.db.discountCodes.updateOne({ code }, { $set: { uses: discountCode.uses - 1 } });
+    this.addRollbackOperation(async () => {
+      await this.db.discountCodes.updateOne({ code }, { $set: discountCode });
+    });
 
     // Update user discounts
     const newDiscountCodes: User['discountCodes'] = [
@@ -56,7 +54,10 @@ export class AddDiscountCodeTransaction extends Transaction {
     ];
 
     await this.lock(LockType.write, 'User');
-    await this.db.users.findOneAndUpdate({ _id: MongoUtils.toObjectId(userId) }, { $set: { discountCodes: newDiscountCodes } });
+    await this.db.users.updateOne({ _id: MongoUtils.toObjectId(userId) }, { $set: { discountCodes: newDiscountCodes } });
+    this.addRollbackOperation(async () => {
+      await this.db.users.updateOne({ _id: MongoUtils.toObjectId(userId) }, { $set: user });
+    });
 
     return { added: true };
   }

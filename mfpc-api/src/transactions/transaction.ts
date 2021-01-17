@@ -1,5 +1,7 @@
 import { ConflictException } from '@nestjs/common';
+import * as chalk from 'chalk';
 import { LockType, TransactionService } from 'src/services/transaction.service';
+import { TimeUtils } from 'src/utils/time.utils';
 import { Utils } from 'src/utils/utils';
 import { AbortException } from './abort-exception';
 
@@ -7,6 +9,7 @@ export abstract class Transaction {
   protected transactionService: TransactionService = TransactionService.getInstance();
 
   private locks: { id: string; object: string }[] = [];
+  private rollbackOperations: (() => Promise<void>)[] = [];
 
   id: string;
 
@@ -21,6 +24,10 @@ export abstract class Transaction {
     if (!this.locks.some((lock) => lock.id === lockId)) {
       this.locks.push({ id: lockId, object: resource });
     }
+  }
+
+  protected addRollbackOperation(callback: () => Promise<void>) {
+    this.rollbackOperations.push(callback);
   }
 
   private releaseAllLocks() {
@@ -38,10 +45,16 @@ export abstract class Transaction {
       return result;
     } catch (error) {
       if (error instanceof AbortException) {
-        // Rollback
         wasAborted = true;
+        // Rollback
+        let rollbackOperation;
+        let count = 0;
+        while ((rollbackOperation = this.rollbackOperations.pop())) {
+          await rollbackOperation();
+          count++;
+        }
+        console.log(`[${chalk.green(TimeUtils.nowFormatted)}] [${chalk.cyan(this.id)}] Rolled back ${count} transaction operations`);
         throw new ConflictException('The transaction was aborted. Please try again.');
-        // TODO: Implement rollback
       } else {
         throw error;
       }

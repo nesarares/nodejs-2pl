@@ -39,7 +39,7 @@ interface WaitFor {
   onRejected: () => void;
 }
 
-const prefix = (transactionId: string) => {
+export const prefix = (transactionId: string) => {
   return `[${chalk.green(TimeUtils.nowFormatted)}] [${chalk.cyan(transactionId)}]`;
 };
 
