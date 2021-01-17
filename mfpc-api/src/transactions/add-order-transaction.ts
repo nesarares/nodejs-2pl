@@ -72,7 +72,7 @@ export class AddOrderTransaction extends Transaction {
     await this.lock(LockType.write, 'Order');
     const response = (await this.db.orders.insertOne(toAddOrder as any))?.ops[0];
 
-    await Utils.sleep(3000); // Debug for deadlock
+    await Utils.sleep(Utils.SLEEP_MS); // Debug for deadlock
 
     // Update user points
     await this.lock(LockType.read, 'User');

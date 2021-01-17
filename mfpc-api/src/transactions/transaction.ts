@@ -1,5 +1,7 @@
+import { ConflictException } from '@nestjs/common';
 import { LockType, TransactionService } from 'src/services/transaction.service';
 import { Utils } from 'src/utils/utils';
+import { AbortException } from './abort-exception';
 
 export abstract class Transaction {
   protected transactionService: TransactionService = TransactionService.getInstance();
@@ -35,12 +37,19 @@ export abstract class Transaction {
       const result = await this.doTransaction();
       return result;
     } catch (error) {
-      // Rollback
-      // TODO: Implement rollback
-      throw error;
+      if (error instanceof AbortException) {
+        // Rollback
+        wasAborted = true;
+        throw new ConflictException('The transaction was aborted. Please try again.');
+        // TODO: Implement rollback
+      } else {
+        throw error;
+      }
     } finally {
       this.releaseAllLocks();
-      if (!wasAborted) {
+      if (wasAborted) {
+        this.transactionService.abortTransaction(this.id);
+      } else {
         this.transactionService.commitTransaction(this.id);
       }
     }

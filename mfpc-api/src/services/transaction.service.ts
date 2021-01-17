@@ -1,11 +1,12 @@
 import { Utils } from 'src/utils/utils';
 import * as chalk from 'chalk';
 import { TimeUtils } from 'src/utils/time.utils';
+import { AbortException } from 'src/transactions/abort-exception';
 
 enum TransactionStatus {
   active = 'active',
-  abort = 'abort',
-  commit = 'commit',
+  abort = 'aborted',
+  commit = 'committed',
 }
 
 export enum LockType {
@@ -15,7 +16,7 @@ export enum LockType {
 
 interface Transaction {
   id: string;
-  timestamp: Date;
+  timestamp: string;
   status: TransactionStatus;
 }
 
@@ -40,7 +41,7 @@ interface WaitFor {
 
 const prefix = (transactionId: string) => {
   return `[${chalk.green(TimeUtils.nowFormatted)}] [${chalk.cyan(transactionId)}]`;
-}
+};
 
 export class TransactionService {
   private transactions: Transaction[] = [];
@@ -59,13 +60,9 @@ export class TransactionService {
     this.initDeadlockWatcher();
   }
 
-  private initDeadlockWatcher() {
-    // TODO: Implement deadlock watcher
-  }
-
-  private displayWaitFors() {
+  private displayWaitFors(list = this.waitFors) {
     console.table(
-      this.waitFors.map((wf) => ({
+      list.map((wf) => ({
         id: wf.id,
         lockObject: wf.lockObject,
         lockType: wf.lockType,
@@ -73,6 +70,29 @@ export class TransactionService {
         transactionWithLockId: wf.transactionWithLockId,
       }))
     );
+  }
+
+  private initDeadlockWatcher() {
+    setInterval(() => {
+      for (const waitFor of this.waitFors) {
+        const foundCyclicWaitFor = this.waitFors.find(
+          (other) =>
+            other.transactionWithLockId === waitFor.transactionWaitingLockId &&
+            other.transactionWaitingLockId === waitFor.transactionWithLockId
+        );
+        if (foundCyclicWaitFor) {
+          console.log(`${prefix('DEADLOCK WATCHER')} Found simple cycle found in wait-for graph:`);
+          this.displayWaitFors([waitFor, foundCyclicWaitFor]);
+          console.log(`${prefix('DEADLOCK WATCHER')} Killing transaction ${foundCyclicWaitFor.transactionWaitingLockId}`);
+
+          // Remove from wait-for list and reject wait for callback
+          this.waitFors.splice(this.waitFors.indexOf(foundCyclicWaitFor), 1);
+          setTimeout(() => {
+            foundCyclicWaitFor.onRejected();
+          });
+        }
+      }
+    }, Utils.DEADLOCK_WATCH_INTERVAL);
   }
 
   private addLock(transactionId: string, type: LockType, object: string) {
@@ -109,7 +129,7 @@ export class TransactionService {
   public addTransaction(transactionId: string) {
     this.transactions.push({
       id: transactionId,
-      timestamp: new Date(),
+      timestamp: TimeUtils.nowFormatted,
       status: TransactionStatus.active,
     });
     console.log(`${prefix(transactionId)} Starting. Transactions:`);
@@ -121,6 +141,15 @@ export class TransactionService {
     if (transaction) {
       transaction.status = TransactionStatus.commit;
       console.log(`${prefix(transactionId)} Commited. Transactions:`);
+      console.table(this.transactions);
+    }
+  }
+
+  public abortTransaction(transactionId: string) {
+    const transaction = this.transactions.find((t) => t.id === transactionId);
+    if (transaction) {
+      transaction.status = TransactionStatus.abort;
+      console.log(`${prefix(transactionId)} Aborted. Transactions:`);
       console.table(this.transactions);
     }
   }
@@ -162,7 +191,7 @@ export class TransactionService {
           transactionWaitingLockId: transactionId,
           transactionWithLockId,
           onAvailable: (lockId: string) => resolve(lockId),
-          onRejected: () => reject(),
+          onRejected: () => reject(new AbortException()),
         });
         console.log(`${prefix(transactionId)} Add ${chalk.magenta(lockType)} wait for ${chalk.yellow(object)}. Wait-for graph:`);
         this.displayWaitFors();
@@ -178,14 +207,11 @@ export class TransactionService {
     console.table(this.locks);
 
     for (const waitFor of this.waitFors) {
-      if (waitFor.lockObject === lock.object && waitFor.transactionWaitingLockId === lock.transactionId) {
+      if (waitFor.lockObject === lock.object && waitFor.transactionWithLockId === lock.transactionId) {
         // Check if we can remove from wait-for graph
         if (this.canLock(waitFor.transactionWaitingLockId, waitFor.lockType, waitFor.lockObject)) {
           // Remove current wait for
-          this.waitFors = this.waitFors.splice(
-            this.waitFors.findIndex((wf) => wf.id === waitFor.id),
-            1
-          );
+          this.waitFors.splice(this.waitFors.indexOf(waitFor), 1);
 
           console.log(
             `${prefix(waitFor.transactionWaitingLockId)} Removed ${chalk.magenta(waitFor.lockType)} wait-for for ${chalk.yellow(

@@ -33,7 +33,7 @@ export class AddDiscountCodeTransaction extends Transaction {
       throw new BadRequestException('The discount code is invalid');
     }
 
-    await Utils.sleep(3000); // Debug for deadlock
+    await Utils.sleep(Utils.SLEEP_MS); // Debug for deadlock
 
     // Decrease discount code uses
     await this.lock(LockType.write, 'DiscountCode');
