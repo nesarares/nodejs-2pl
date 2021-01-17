@@ -14,6 +14,7 @@ export class AccountPageComponent implements OnInit {
   discountCode: string;
 
   error: any;
+  isLoadingAddCode = false;
 
   constructor(public authService: AuthService) {}
 
@@ -34,12 +35,15 @@ export class AccountPageComponent implements OnInit {
   async addDiscountCode() {
     try {
       this.error = null;
+      this.isLoadingAddCode = true;
       await this.authService.addDiscountCode(this.discountCode);
       this.discountCode = null;
       this.loadUser();
     } catch (error) {
       console.error(error);
       this.error = error;
+    } finally {
+      this.isLoadingAddCode = false;
     }
   }
 }

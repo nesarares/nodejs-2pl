@@ -12,10 +12,11 @@ export class OrderService {
   async checkDiscountCode(
     code: string
   ): Promise<{ valid: boolean; discount?: number }> {
-    return {
-      valid: true,
-      discount: 10,
-    };
+    return this.http
+      .get<{ valid: boolean; discount?: number }>('discount-codes/valid', {
+        params: { code },
+      })
+      .toPromise();
   }
 
   async placeOrder(discountCode: string) {
