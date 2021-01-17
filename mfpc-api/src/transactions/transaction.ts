@@ -12,15 +12,13 @@ export abstract class Transaction {
     this.id = Utils.generateId();
   }
 
-  protected abstract doTransaction(): Promise<void>;
+  protected abstract doTransaction(): Promise<any>;
 
   protected async lock(operation: LockType, resource: string) {
-    if (this.locks.some((lock) => lock.object === resource)) {
-      // This transaction already has a lock on this resource
-      return;
-    }
     const lockId = await this.transactionService.requestLock(this.id, operation, resource);
-    this.locks.push({ id: lockId, object: resource });
+    if (!this.locks.some((lock) => lock.id === lockId)) {
+      this.locks.push({ id: lockId, object: resource });
+    }
   }
 
   private releaseAllLocks() {
@@ -31,14 +29,20 @@ export abstract class Transaction {
   }
 
   public async run(): Promise<void> {
+    let wasAborted = false;
     try {
       this.transactionService.addTransaction(this.id);
-      await this.doTransaction();
-      this.releaseAllLocks();
+      const result = await this.doTransaction();
+      return result;
     } catch (error) {
       // Rollback
       // TODO: Implement rollback
-      console.error(error);
+      throw error;
+    } finally {
+      this.releaseAllLocks();
+      if (!wasAborted) {
+        this.transactionService.commitTransaction(this.id);
+      }
     }
   }
 }

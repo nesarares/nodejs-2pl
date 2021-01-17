@@ -48,3 +48,28 @@ graph TD
 graph LR
 	a[T1 Lock discounts]-->b[T2 Lock users]-->c[...]-->d[T1 Request lock users]-->e[T2 Request lock discounts]
 ```
+
+```mermaid
+graph TD
+	subgraph addDiscountCode [Add Discount Code]
+		a[ReadLock - Discounts]
+		--> b[ReadLock - Users]
+		--> x[...]
+		--> d[WriteLock - Discounts]
+		--> c[WriteLock - Users]
+		--> y[...]
+		--> e[Unlock - Discounts]
+		--> f[Unlock - Users]
+	end
+
+	subgraph orderFlow [Order flow]
+		a2[ReadLock - Users]
+		--> b2[ReadLock - Discounts]
+		--> x2[...]
+		--> d2[WriteLock - Users]
+		--> c2[WriteLock - Discounts]
+		--> y2[...]
+		--> e2[Unlock - Users]
+		--> f2[Unlock - Discounts]
+	end
+```

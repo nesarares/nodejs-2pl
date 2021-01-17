@@ -10,9 +10,9 @@ import { TimeUtils } from './utils/time.utils';
 import * as consoleStamp from 'console-stamp';
 import * as chalk from 'chalk';
 
-consoleStamp(console, {
-  format: ':date(yyyy-mm-dd HH:MM:ss).green',
-});
+// consoleStamp(console, {
+//   format: ':date(yyyy-mm-dd HH:MM:ss).green',
+// });
 
 morgan.token('customDate', () => chalk.green(`[${TimeUtils.nowFormatted}]`));
 

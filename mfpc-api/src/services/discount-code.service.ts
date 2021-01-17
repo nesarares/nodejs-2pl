@@ -1,8 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 import { DatabaseService } from 'src/services/database.service';
-import { MongoUtils } from 'src/utils/mongo.utils';
-import { User } from '../models/user.model';
 import { DiscountCode } from '../models/discount-code.model';
 import { AddDiscountCodeTransaction } from 'src/transactions/add-discount-code-transaction';
 
@@ -16,7 +14,7 @@ export class DiscountCodeService {
   }
 
   public async addMyDiscountCode(userId: string | ObjectId, code: string) {
-    const transaction = new AddDiscountCodeTransaction();
+    const transaction = new AddDiscountCodeTransaction(this.db, { userId, code });
     return transaction.run();
   }
 }
