@@ -83,7 +83,7 @@ export class TransactionService {
         if (foundCyclicWaitFor) {
           console.log(`${prefix('DEADLOCK WATCHER')} Found simple cycle found in wait-for graph:`);
           this.displayWaitFors([waitFor, foundCyclicWaitFor]);
-          console.log(`${prefix('DEADLOCK WATCHER')} Killing transaction ${foundCyclicWaitFor.transactionWaitingLockId}`);
+          console.log(`${prefix('DEADLOCK WATCHER')} Aborting transaction ${foundCyclicWaitFor.transactionWaitingLockId}`);
 
           // Remove from wait-for list and reject wait for callback
           this.waitFors.splice(this.waitFors.indexOf(foundCyclicWaitFor), 1);

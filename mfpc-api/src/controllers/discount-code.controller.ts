@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ReqUser } from 'src/decorators/req-user.decorator';
 import { AuthGuard } from '../guards/auth.guard';
 import { User } from '../models/user.model';
@@ -12,6 +12,12 @@ export class DiscountCodeController {
   @Post()
   public async addDiscountCode(@Body() discountCode: DiscountCode): Promise<DiscountCode> {
     return this.discountCodeService.addDiscountCode(discountCode);
+  }
+
+  @Get('valid')
+  public async validate(@Query('code') code: string) {
+    code = (code || '').toUpperCase();
+    return this.discountCodeService.verifyDiscountCode(code);
   }
 
 	@Post('me')
